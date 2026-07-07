@@ -1,0 +1,6 @@
+﻿='50820'
+='127.0.0.1'
+='localhost'
+='C:\Users\Admin\Desktop\Proga\HR_student_project\.superpowers\brainstorm\-1783370609,56221'
+='51852'
+node 'C:\Users\Admin\.codex\superpowers\skills\brainstorming\scripts\server.cjs'

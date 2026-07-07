@@ -1,0 +1,16 @@
+.git
+.agents
+.codex
+.superpowers
+**/.venv
+**/node_modules
+**/dist
+**/__pycache__
+**/*.pyc
+**/*.pyo
+**/*.pyd
+**/.pytest_cache
+**/pytest-cache-files-*
+apps/backend/task2.db
+apps/backend/task4.db
+tests

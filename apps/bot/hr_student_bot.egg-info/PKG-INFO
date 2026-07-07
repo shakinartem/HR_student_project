@@ -1,0 +1,10 @@
+Metadata-Version: 2.4
+Name: hr-student-bot
+Version: 0.1.0
+Summary: Telegram bot for the HR student project.
+Requires-Python: >=3.11
+Requires-Dist: aiogram<4.0,>=3.0
+Requires-Dist: pydantic-settings
+Requires-Dist: httpx
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"

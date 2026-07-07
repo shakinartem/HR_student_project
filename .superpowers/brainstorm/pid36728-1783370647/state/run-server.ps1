@@ -1,0 +1,6 @@
+﻿$env:BRAINSTORM_PORT = "64327"
+$env:BRAINSTORM_HOST = "127.0.0.1"
+$env:BRAINSTORM_URL_HOST = "localhost"
+$env:BRAINSTORM_DIR = "C:\Users\Admin\Desktop\Proga\HR_student_project\.superpowers\brainstorm\pid36728-1783370647"
+$env:BRAINSTORM_OWNER_PID = "36728"
+node "C:\Users\Admin\.codex\superpowers\skills\brainstorming\scripts\server.cjs"

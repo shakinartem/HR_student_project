@@ -1,0 +1,6 @@
+aiogram<4.0,>=3.0
+pydantic-settings
+httpx
+
+[dev]
+pytest

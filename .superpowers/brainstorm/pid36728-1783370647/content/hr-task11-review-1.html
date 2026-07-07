@@ -1,0 +1,239 @@
+<h2>HR Mini App Review</h2>
+<p class="subtitle">Validate layout, status hierarchy, payment flow clarity, and before/after contact visibility. Implementation source of truth will stay in code and docs.</p>
+
+<div class="options">
+  <div class="option" data-choice="overall-good" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Direction Works</h3>
+      <p>Keep this structure and move to implementation planning.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="needs-denser-status" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Need Stronger Status Blocks</h3>
+      <p>Payment, moderation, and application state should feel more prominent.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="needs-simpler-form" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Need Simpler Form</h3>
+      <p>The vacancy editor should be broken into clearer sections or steps.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="mockup">
+    <div class="mockup-header">1. HR Dashboard</div>
+    <div class="mockup-body">
+      <div style="display:grid;gap:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div class="label">HR Cabinet</div>
+            <h3 style="margin:6px 0 4px">Добрый день, Анна</h3>
+            <p class="subtitle" style="margin:0">Следи за публикацией вакансий и откликами студентов.</p>
+          </div>
+          <div style="padding:10px 14px;border-radius:999px;background:#eef2ff;color:#3659d9;font-weight:700;font-size:12px">HR ACTIVE</div>
+        </div>
+        <div class="cards" style="grid-template-columns:repeat(2,minmax(0,1fr))">
+          <div class="card">
+            <div class="card-body">
+              <div class="label">Vacancies</div>
+              <h3 style="margin:8px 0 4px">Мои вакансии</h3>
+              <p>4 всего, 1 ждёт оплаты, 1 на ручной проверке</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <div class="label">Create</div>
+              <h3 style="margin:8px 0 4px">Новая вакансия</h3>
+              <p>Быстрый вход в форму публикации</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <div class="label">Applications</div>
+              <h3 style="margin:8px 0 4px">Отклики</h3>
+              <p>2 новых, 1 требует решения сегодня</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <div class="label">Support</div>
+              <h3 style="margin:8px 0 4px">Поддержка</h3>
+              <p>Заглушка MVP для связи по спорным случаям</p>
+            </div>
+          </div>
+        </div>
+        <div style="display:grid;gap:10px">
+          <div style="padding:14px;border-radius:18px;background:#fff7ed;border:1px solid #fdba74">
+            <strong>Нужно действие:</strong> вакансия «Бариста, вечер» ждёт оплату публикации.
+          </div>
+          <div style="padding:14px;border-radius:18px;background:#eff6ff;border:1px solid #93c5fd">
+            <strong>Новый отклик:</strong> по вакансии «Официант выходного дня» пришёл новый студент.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="mockup">
+    <div class="mockup-header">2. Vacancy Creation Form</div>
+    <div class="mockup-body">
+      <div style="display:grid;gap:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div class="label">Draft</div>
+            <h3 style="margin:6px 0 4px">Создание вакансии</h3>
+            <p class="subtitle" style="margin:0">Простая мобильная форма с логическими блоками вместо длинной бесконечной простыни.</p>
+          </div>
+          <div style="font-size:12px;color:#64748b">Шаг 1 из 3</div>
+        </div>
+        <div style="display:grid;gap:12px">
+          <input class="mock-input" value="Бариста утренняя смена">
+          <div class="split">
+            <input class="mock-input" value="restaurant">
+            <input class="mock-input" value="shift">
+          </div>
+          <div class="split">
+            <input class="mock-input" value="morning">
+            <input class="mock-input" value="2500 ₽/смена">
+          </div>
+          <div class="split">
+            <input class="mock-input" value="Центр">
+            <input class="mock-input" value="offline">
+          </div>
+          <input class="mock-input" value="ул. Московская, 12">
+          <div class="placeholder" style="text-align:left">Описание вакансии</div>
+          <div class="placeholder" style="text-align:left">Обязанности</div>
+          <div class="placeholder" style="text-align:left">Требования</div>
+          <div class="placeholder" style="text-align:left">Условия</div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:#334155">
+            <div style="width:18px;height:18px;border-radius:6px;border:2px solid #3659d9;background:#dbeafe"></div>
+            Требуется опыт
+          </div>
+        </div>
+        <div style="display:flex;gap:10px">
+          <button class="mock-button" style="flex:1;background:#e2e8f0;color:#0f172a">Сохранить черновик</button>
+          <button class="mock-button" style="flex:1">Создать</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="mockup">
+    <div class="mockup-header">3. Vacancy Detail With Publication Payment</div>
+    <div class="mockup-body">
+      <div style="display:grid;gap:14px">
+        <div style="display:flex;justify-content:space-between;align-items:start">
+          <div>
+            <div class="label">Vacancy</div>
+            <h3 style="margin:6px 0 4px">Бариста утренняя смена</h3>
+            <p class="subtitle" style="margin:0">Coffee Point • Центр • 2500 ₽/смена</p>
+          </div>
+          <div style="padding:10px 14px;border-radius:999px;background:#fff7ed;color:#c2410c;font-weight:700;font-size:12px">AWAITING PAYMENT</div>
+        </div>
+        <div style="padding:16px;border-radius:18px;background:#fff7ed;border:1px solid #fdba74">
+          <div class="label">Publication</div>
+          <h3 style="margin:8px 0 4px">Оплатить публикацию</h3>
+          <p style="margin:0 0 12px;color:#7c2d12">После подтверждения платежа вакансия уйдёт в модерацию. Реальный успех платежа определяет только бэкенд.</p>
+          <div class="split">
+            <div style="padding:12px;border-radius:16px;background:white">
+              <div class="label">Amount</div>
+              <strong>490 ₽</strong>
+            </div>
+            <div style="padding:12px;border-radius:16px;background:white">
+              <div class="label">Payment status</div>
+              <strong>pending</strong>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:12px">
+            <button class="mock-button" style="flex:1">Создать платёж</button>
+            <button class="mock-button" style="flex:1;background:#e2e8f0;color:#0f172a">Mock confirm</button>
+          </div>
+        </div>
+        <div class="cards" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+          <div class="card"><div class="card-body"><div class="label">draft</div><p>Редактируем до отправки</p></div></div>
+          <div class="card"><div class="card-body"><div class="label">moderation</div><p>После оплаты ждём проверку</p></div></div>
+          <div class="card"><div class="card-body"><div class="label">manual_review</div><p>Нужен ручной просмотр</p></div></div>
+          <div class="card"><div class="card-body"><div class="label">active</div><p>Показывается студентам</p></div></div>
+          <div class="card"><div class="card-body"><div class="label">rejected</div><p>Показываем причину и даём правки</p></div></div>
+          <div class="card"><div class="card-body"><div class="label">awaiting_payment</div><p>Ждём подтверждение платежа</p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="split">
+    <div class="mockup">
+      <div class="mockup-header">4. Application Detail Before Accept</div>
+      <div class="mockup-body">
+        <div style="display:grid;gap:14px">
+          <div style="display:flex;justify-content:space-between;align-items:start">
+            <div>
+              <div class="label">Application</div>
+              <h3 style="margin:6px 0 4px">Иван • Официант выходного дня</h3>
+              <p class="subtitle" style="margin:0">СГТУ • 2 курс • Информатика</p>
+            </div>
+            <div style="padding:10px 14px;border-radius:999px;background:#eef2ff;color:#3659d9;font-weight:700;font-size:12px">SENT</div>
+          </div>
+          <div style="padding:14px;border-radius:18px;background:#f8fafc">
+            <strong>Опыт</strong>
+            <p style="margin:8px 0 0">Работал официантом 2 месяца, готов выходить по пятницам и выходным.</p>
+          </div>
+          <div style="padding:16px;border-radius:18px;background:#f8fafc;border:1px dashed #94a3b8">
+            <div class="label">Contacts locked</div>
+            <h3 style="margin:8px 0 4px">Контакты откроются после принятия отклика</h3>
+            <p style="margin:0;color:#64748b">Телефон, email и Telegram username приходят только от бэкенда после accept.</p>
+          </div>
+          <div style="display:flex;gap:10px">
+            <button class="mock-button" style="flex:1">Принять</button>
+            <button class="mock-button" style="flex:1;background:#fee2e2;color:#991b1b">Отклонить</button>
+          </div>
+          <div class="placeholder" style="text-align:left">Поле жалобы на студента + кнопка «Пожаловаться»</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mockup">
+      <div class="mockup-header">5. Application Detail After Accept</div>
+      <div class="mockup-body">
+        <div style="display:grid;gap:14px">
+          <div style="display:flex;justify-content:space-between;align-items:start">
+            <div>
+              <div class="label">Application</div>
+              <h3 style="margin:6px 0 4px">Иван • Официант выходного дня</h3>
+              <p class="subtitle" style="margin:0">СГТУ • 2 курс • Информатика</p>
+            </div>
+            <div style="padding:10px 14px;border-radius:999px;background:#dcfce7;color:#166534;font-weight:700;font-size:12px">ACCEPTED</div>
+          </div>
+          <div style="padding:14px;border-radius:18px;background:#f8fafc">
+            <strong>Опыт</strong>
+            <p style="margin:8px 0 0">Работал официантом 2 месяца, готов выходить по пятницам и выходным.</p>
+          </div>
+          <div style="padding:16px;border-radius:18px;background:#ecfdf5;border:1px solid #86efac">
+            <div class="label">Contacts from backend</div>
+            <div style="display:grid;gap:8px;margin-top:8px">
+              <div><strong>Телефон:</strong> +7 999 000-00-00</div>
+              <div><strong>Email:</strong> student@example.com</div>
+              <div><strong>Telegram:</strong> @student_username</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px">
+            <button class="mock-button" style="flex:1;background:#e2e8f0;color:#334155">Уже принято</button>
+            <button class="mock-button" style="flex:1;background:#fef3c7;color:#92400e">Пожаловаться</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

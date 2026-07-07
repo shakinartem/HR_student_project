@@ -1,0 +1,69 @@
+=58165 : Имя "=58165" не распознано как имя командлета, функции, файла сценария или выполняемой программы. Проверьте пр
+авильность написания имени, а также наличие и правильность пути, после чего повторите попытку.
+C:\Users\Admin\Desktop\Proga\HR_student_project\.superpowers\brainstorm\pid46508-1783370622,38414\state\run-server.ps1:
+1 знак:1
++ ='58165'
++ ~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (=58165:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+=127.0.0.1 : Имя "=127.0.0.1" не распознано как имя командлета, функции, файла сценария или выполняемой программы. Пров
+ерьте правильность написания имени, а также наличие и правильность пути, после чего повторите попытку.
+C:\Users\Admin\Desktop\Proga\HR_student_project\.superpowers\brainstorm\pid46508-1783370622,38414\state\run-server.ps1:
+2 знак:1
++ ='127.0.0.1'
++ ~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (=127.0.0.1:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+=localhost : Имя "=localhost" не распознано как имя командлета, функции, файла сценария или выполняемой программы. Пров
+ерьте правильность написания имени, а также наличие и правильность пути, после чего повторите попытку.
+C:\Users\Admin\Desktop\Proga\HR_student_project\.superpowers\brainstorm\pid46508-1783370622,38414\state\run-server.ps1:
+3 знак:1
++ ='localhost'
++ ~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (=localhost:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+=C:\Users\Admin\Desktop\Proga\HR_student_project\.superpowers\brainstorm\pid46508-1783370622,38414 : Имя "=C:\Users\Adm
+in\Desktop\Proga\HR_student_project\.superpowers\brainstorm\pid46508-1783370622,38414" не распознано как имя командлета
+, функции, файла сценария или выполняемой программы. Проверьте правильность написания имени, а также наличие и правильн
+ость пути, после чего повторите попытку.
+C:\Users\Admin\Desktop\Proga\HR_student_project\.superpowers\brainstorm\pid46508-1783370622,38414\state\run-server.ps1:
+4 знак:1
++ ='C:\Users\Admin\Desktop\Proga\HR_student_project\.superpowers\brains ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (=C:\Users\Admin...783370622,38414:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+=46508 : Имя "=46508" не распознано как имя командлета, функции, файла сценария или выполняемой программы. Проверьте пр
+авильность написания имени, а также наличие и правильность пути, после чего повторите попытку.
+C:\Users\Admin\Desktop\Proga\HR_student_project\.superpowers\brainstorm\pid46508-1783370622,38414\state\run-server.ps1:
+5 знак:1
++ ='46508'
++ ~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (=46508:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+node:fs:1363
+  const result = binding.mkdir(
+                         ^
+
+Error: EPERM: operation not permitted, mkdir 'C:\tmp\brainstorm\content'
+    at Object.mkdirSync (node:fs:1363:26)
+    at startServer (C:\Users\Admin\.codex\superpowers\skills\brainstorming\scripts\server.cjs:263:39)
+    at Object.<anonymous> (C:\Users\Admin\.codex\superpowers\skills\brainstorming\scripts\server.cjs:351:3)
+    at Module._compile (node:internal/modules/cjs/loader:1706:14)
+    at Object..js (node:internal/modules/cjs/loader:1839:10)
+    at Module.load (node:internal/modules/cjs/loader:1441:32)
+    at Function._load (node:internal/modules/cjs/loader:1263:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5) {
+  errno: -4048,
+  code: 'EPERM',
+  syscall: 'mkdir',
+  path: 'C:\\tmp\\brainstorm\\content'
+}
+
+Node.js v22.20.0

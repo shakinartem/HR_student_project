@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hr-student-bot"
+version = "0.1.0"
+description = "Telegram bot for the HR student project."
+requires-python = ">=3.11"
+dependencies = [
+    "aiogram>=3.0,<4.0",
+    "pydantic-settings",
+    "httpx",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+]
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.pytest.ini_options]
+addopts = "-p no:cacheprovider"
+pythonpath = ["."]
+testpaths = ["tests"]
+norecursedirs = [".git", ".hg", ".svn", ".tox", ".nox", ".venv", "venv", "env", "build", "dist", "node_modules", "__pycache__", "pytest-cache-files-*"]

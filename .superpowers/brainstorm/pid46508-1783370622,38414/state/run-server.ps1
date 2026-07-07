@@ -1,0 +1,6 @@
+﻿='58165'
+='127.0.0.1'
+='localhost'
+='C:\Users\Admin\Desktop\Proga\HR_student_project\.superpowers\brainstorm\pid46508-1783370622,38414'
+='46508'
+node 'C:\Users\Admin\.codex\superpowers\skills\brainstorming\scripts\server.cjs'

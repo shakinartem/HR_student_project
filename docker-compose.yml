@@ -1,0 +1,70 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-hr_student_project}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  backend:
+    build:
+      context: .
+      dockerfile: apps/backend/Dockerfile
+    env_file:
+      - .env.compose
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "${BACKEND_HOST_PORT:-8000}:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health').read()"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        VITE_APP_ENV: ${WEB_VITE_APP_ENV:-production}
+        VITE_API_BASE_URL: ${WEB_VITE_API_BASE_URL:-http://localhost:${BACKEND_HOST_PORT:-8000}}
+        VITE_TELEGRAM_WEBAPP_URL: ${WEB_VITE_TELEGRAM_WEBAPP_URL:-http://localhost:8080}
+        VITE_GUEST_FREE_VACANCY_VIEWS: ${WEB_VITE_GUEST_FREE_VACANCY_VIEWS:-3}
+        VITE_ENABLE_MOCK_PAYMENT_CONFIRM: ${WEB_VITE_ENABLE_MOCK_PAYMENT_CONFIRM:-true}
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health').read()"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  bot:
+    build:
+      context: .
+      dockerfile: apps/bot/Dockerfile
+    env_file:
+      - .env.compose
+    environment:
+      BACKEND_BASE_URL: ${BOT_BACKEND_BASE_URL:-http://backend:8000}
+    depends_on:
+      backend:
+        condition: service_healthy
+    profiles:
+      - bot
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
