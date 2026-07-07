@@ -276,6 +276,49 @@ def test_student_cannot_apply_to_inactive_vacancy(
     assert response.status_code == 404
 
 
+def test_student_cannot_apply_to_vacancy_without_approved_moderation(
+    client: TestClient,
+    auth_headers: dict[str, str],
+    db_session: Session,
+) -> None:
+    student = setup_student_ready_for_application(db_session)
+    hr_user, company = create_hr_fixture(db_session, telegram_id=8800042, suffix="moderation")
+    vacancy = create_vacancy(
+        db_session,
+        hr_user=hr_user,
+        company=company,
+        title="Moderation vacancy",
+        status=VacancyStatus.ACTIVE,
+        moderation_status="manual_review",
+    )
+    db_session.commit()
+
+    response = client.post(
+        f"/api/vacancies/{vacancy.id}/apply",
+        headers=auth_headers,
+        json={"student_comment": "Interested."},
+    )
+
+    assert response.status_code == 404
+
+
+def test_hr_cannot_access_applications_of_another_company(
+    client: TestClient,
+    db_session: Session,
+    settings,
+) -> None:
+    student_user = setup_student_ready_for_application(db_session)
+    owner_hr, owner_company = create_hr_fixture(db_session, telegram_id=880021, suffix="owner_apps")
+    vacancy = create_vacancy(db_session, hr_user=owner_hr, company=owner_company, title="Foreign vacancy")
+    create_application(db_session, vacancy=vacancy, student_user=student_user)
+    other_hr, _ = create_hr_fixture(db_session, telegram_id=880022, suffix="other_apps")
+    hr_headers = authenticate_user(client, settings, telegram_id=880022, username="hr_other_apps")
+
+    response_list = client.get("/api/hr/applications", headers=hr_headers)
+    assert response_list.status_code == 200
+    assert response_list.json()["items"] == []
+
+
 def test_student_cannot_apply_twice_to_same_vacancy(
     client: TestClient,
     auth_headers: dict[str, str],

@@ -7,6 +7,7 @@ from fastapi import HTTPException, status
 from sqlalchemy import Select, and_, func, or_, select
 from sqlalchemy.orm import Session, joinedload
 
+from app.core.enums import UserRole
 from app.models import Company, GuestVacancyView, User, Vacancy, VacancyView
 
 GUEST_VIEW_LIMIT = 3
@@ -50,6 +51,8 @@ def base_active_vacancies_query() -> Select[tuple[Vacancy]]:
         select(Vacancy)
         .options(joinedload(Vacancy.company))
         .where(Vacancy.status == "active")
+        .where(Vacancy.moderation_status == "approved")
+        .where(Vacancy.published_at.is_not(None))
         .where(or_(Vacancy.expires_at.is_(None), Vacancy.expires_at > now))
     )
 
@@ -136,9 +139,14 @@ def ensure_view_allowed_and_record(
         )
 
     if user is not None:
-        existing = _existing_user_view(session, user_id=user.id, vacancy_id=vacancy.id)
-        if existing is not None:
-            return _count_user_views(session, user_id=user.id), "user"
+        if user.role is UserRole.STUDENT:
+            existing = _existing_user_view(session, user_id=user.id, vacancy_id=vacancy.id)
+            if existing is not None:
+                return _count_user_views(session, user_id=user.id), "user"
+            session.add(VacancyView(user_id=user.id, vacancy_id=vacancy.id))
+            session.commit()
+            return _count_user_views(session, user_id=user.id) + 1, "user"
+
         view_count = _count_user_views(session, user_id=user.id)
         if view_count >= GUEST_VIEW_LIMIT:
             raise HTTPException(
@@ -148,6 +156,9 @@ def ensure_view_allowed_and_record(
                     "message": "Guest preview limit reached",
                 },
             )
+        existing = _existing_user_view(session, user_id=user.id, vacancy_id=vacancy.id)
+        if existing is not None:
+            return view_count, "user"
         session.add(VacancyView(user_id=user.id, vacancy_id=vacancy.id))
         session.commit()
         return view_count + 1, "user"

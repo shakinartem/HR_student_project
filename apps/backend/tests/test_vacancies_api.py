@@ -385,3 +385,30 @@ def test_promoted_vacancies_sort_before_non_promoted_by_default(client: TestClie
     items = response.json()["items"]
     assert items[0]["is_promoted"] is True
     assert items[0]["title"] == "Promoted active vacancy"
+
+
+def test_guest_limit_does_not_apply_to_student(
+    client: TestClient,
+    auth_headers: dict[str, str],
+    db_session: Session,
+) -> None:
+    vacancies = seed_vacancies(db_session)
+    for _ in range(5):
+        response = client.get(f"/api/vacancies/{vacancies['recent_active'].id}", headers=auth_headers)
+        assert response.status_code == 200
+
+
+def test_hr_is_not_subject_to_guest_limit(
+    client: TestClient,
+    db_session: Session,
+    settings,
+) -> None:
+    vacancies = seed_vacancies(db_session)
+    hr_headers = authenticate_user(client, settings, telegram_id=880020, username="hr_limit")
+    user = db_session.scalar(select(User).where(User.telegram_id == 880020))
+    user.role = UserRole.HR
+    db_session.commit()
+
+    for _ in range(6):
+        response = client.get(f"/api/vacancies/{vacancies['recent_active'].id}", headers=hr_headers)
+        assert response.status_code == 200

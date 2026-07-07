@@ -18,6 +18,8 @@ def get_applyable_vacancy_or_404(session: Session, vacancy_id: UUID) -> Vacancy:
     vacancy = session.scalar(base_active_vacancies_query().where(Vacancy.id == vacancy_id))
     if vacancy is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Vacancy not found")
+    if vacancy.moderation_status != VacancyStatus.APPROVED:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Vacancy not found")
     return vacancy
 
 
@@ -111,6 +113,8 @@ def _ensure_active_hr(user: User) -> None:
 
 def list_hr_applications(session: Session, *, hr_user: User) -> list[Application]:
     _ensure_active_hr(hr_user)
+    if hr_user.hr_profile is None or hr_user.hr_profile.company_id is None:
+        return []
     return list(
         session.scalars(
             select(Application)
@@ -118,7 +122,8 @@ def list_hr_applications(session: Session, *, hr_user: User) -> list[Application
                 joinedload(Application.vacancy).joinedload(Vacancy.company),
                 joinedload(Application.student_user).joinedload(User.student_profile),
             )
-            .where(Application.hr_user_id == hr_user.id)
+            .join(Vacancy, Application.vacancy_id == Vacancy.id)
+            .where(Vacancy.company_id == hr_user.hr_profile.company_id)
             .order_by(Application.created_at.desc())
         ).all()
     )
@@ -129,6 +134,9 @@ def get_hr_application_detail(session: Session, *, hr_user: User, application_id
     application = get_application_with_relations(session, application_id)
     if application.hr_user_id != hr_user.id:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Application not found")
+    if application.vacancy is not None and hr_user.hr_profile is not None:
+        if application.vacancy.company_id != hr_user.hr_profile.company_id:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Application not found")
     if application.status is ApplicationStatus.SENT:
         application.status = ApplicationStatus.VIEWED
         log_event(
