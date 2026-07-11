@@ -11,24 +11,24 @@ import type { AppRoute } from "@/lib/routes";
 import type { StudentProfile, User as UserType } from "@/types/api";
 
 const JOB_TYPE_OPTIONS = [
-  { value: "part_time", label: "Part-time" },
-  { value: "shift", label: "Shifts" },
-  { value: "internship", label: "Internship" },
-  { value: "project", label: "Project" },
+  { value: "part_time", label: "Частичная занятость" },
+  { value: "shift", label: "Смены" },
+  { value: "internship", label: "Стажировка" },
+  { value: "project", label: "Проектная работа" },
 ];
 
 const SCHEDULE_OPTIONS = [
-  { value: "morning", label: "Morning" },
-  { value: "day", label: "Day" },
-  { value: "evening", label: "Evening" },
-  { value: "weekend", label: "Weekend" },
+  { value: "morning", label: "Утро" },
+  { value: "day", label: "День" },
+  { value: "evening", label: "Вечер" },
+  { value: "weekend", label: "Выходные" },
 ];
 
 const DISTRICT_OPTIONS = [
-  { value: "center", label: "Center" },
-  { value: "zavodskoy", label: "Zavodskoy" },
-  { value: "leninsky", label: "Leninsky" },
-  { value: "kirovsky", label: "Kirovsky" },
+  { value: "center", label: "Центр" },
+  { value: "zavodskoy", label: "Заводской" },
+  { value: "leninsky", label: "Ленинский" },
+  { value: "kirovsky", label: "Кировский" },
 ];
 
 interface ProfileFormState {
@@ -102,13 +102,13 @@ export function ProfileScreen({
       <header className="sticky top-0 z-10 bg-bg-secondary/80 backdrop-blur-sm">
         <div className="flex items-center justify-between px-4 py-4">
           <div>
-            <h1 className="text-2xl font-bold text-text-primary">{isCompleted ? "Profile" : "Registration"}</h1>
+            <h1 className="text-2xl font-bold text-text-primary">{isCompleted ? "Профиль" : "Регистрация"}</h1>
             <p className="text-sm text-text-secondary mt-1">
-              {isCompleted ? "Update your preferences and contact info" : "Complete profile to apply for jobs"}
+              {isCompleted ? "Проверьте контакты и предпочтения" : "Заполните профиль для отклика"}
             </p>
           </div>
           <span className="rounded-full bg-bg-card px-4 py-2 text-xs font-medium text-accent border border-border">
-            {currentUser?.role === "student" ? "Student" : "Guest"}
+            {currentUser?.role === "student" ? "Студент" : "Гость"}
           </span>
         </div>
       </header>
@@ -120,11 +120,11 @@ export function ProfileScreen({
               <User className="h-8 w-8 text-text-secondary" />
             </div>
             <div className="text-center">
-              <h2 className="mb-1 mt-0 text-lg font-semibold text-text-primary">Telegram auth required</h2>
+              <h2 className="mb-1 mt-0 text-lg font-semibold text-text-primary">Нужен вход через Telegram</h2>
               <p className="m-0 text-sm text-text-secondary max-w-xs">
                 {canAuthenticateInTelegram
-                  ? "Restart Mini App in Telegram for automatic authentication"
-                  : "Open the app inside Telegram to activate access and complete your profile"}
+                  ? "Перезапустите Mini App в Telegram"
+                  : "Откройте приложение в Telegram для входа"}
               </p>
             </div>
           </Card>
@@ -133,7 +133,7 @@ export function ProfileScreen({
             {isLoading ? (
               <Card className="flex items-center gap-3">
                 <LoaderCircle className="h-5 w-5 animate-spin text-accent" />
-                <p className="m-0 text-sm text-text-secondary">Loading profile...</p>
+                <p className="m-0 text-sm text-text-secondary">Загружаем профиль...</p>
               </Card>
             ) : null}
 
@@ -146,7 +146,7 @@ export function ProfileScreen({
             {!isLoading && !errorMessage ? (
               <>
                 <Card className="space-y-4">
-                  <FormField label="First Name">
+                  <FormField label="Имя">
                     <Input
                       onChange={(event) => setForm((prev) => ({ ...prev, first_name: event.target.value }))}
                       value={form.first_name}
@@ -154,7 +154,7 @@ export function ProfileScreen({
                     />
                   </FormField>
 
-                  <FormField label="Last Name">
+                  <FormField label="Фамилия">
                     <Input
                       onChange={(event) => setForm((prev) => ({ ...prev, last_name: event.target.value }))}
                       value={form.last_name}
@@ -162,7 +162,7 @@ export function ProfileScreen({
                     />
                   </FormField>
 
-                  <FormField label="Phone">
+                  <FormField label="Телефон">
                     <Input
                       inputMode="tel"
                       onChange={(event) => setForm((prev) => ({ ...prev, phone: event.target.value }))}
@@ -185,7 +185,7 @@ export function ProfileScreen({
                 </Card>
 
                 <Card className="space-y-4">
-                  <FormField label="University">
+                  <FormField label="Вуз">
                     <Input
                       onChange={(event) => setForm((prev) => ({ ...prev, university: event.target.value }))}
                       value={form.university}
@@ -193,7 +193,7 @@ export function ProfileScreen({
                     />
                   </FormField>
 
-                  <FormField label="Course">
+                  <FormField label="Курс">
                     <Input
                       inputMode="numeric"
                       min={1}
@@ -204,7 +204,7 @@ export function ProfileScreen({
                     />
                   </FormField>
 
-                  <FormField label="Speciality">
+                  <FormField label="Специальность">
                     <Input
                       onChange={(event) => setForm((prev) => ({ ...prev, speciality: event.target.value }))}
                       value={form.speciality}
@@ -213,7 +213,7 @@ export function ProfileScreen({
                   </FormField>
 
                   <ChipGroup
-                    label="Job Format"
+                    label="Формат работы"
                     onToggle={(value) =>
                       setForm((prev) => ({
                         ...prev,
@@ -225,7 +225,7 @@ export function ProfileScreen({
                   />
 
                   <ChipGroup
-                    label="Schedule"
+                    label="График"
                     onToggle={(value) =>
                       setForm((prev) => ({
                         ...prev,
@@ -237,7 +237,7 @@ export function ProfileScreen({
                   />
 
                   <ChipGroup
-                    label="Districts"
+                    label="Районы"
                     onToggle={(value) =>
                       setForm((prev) => ({
                         ...prev,
@@ -248,7 +248,7 @@ export function ProfileScreen({
                     selected={form.preferred_districts}
                   />
 
-                  <FormField label="Experience & About">
+                  <FormField label="Опыт и о себе">
                     <Textarea
                       onChange={(event) => setForm((prev) => ({ ...prev, experience_text: event.target.value }))}
                       value={form.experience_text}
@@ -271,7 +271,7 @@ export function ProfileScreen({
 
                 <Button className="w-full" onClick={() => onSave(form)} size="lg">
                   {isSaving ? <LoaderCircle className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
-                  Save Profile
+                  Сохранить
                 </Button>
               </>
             ) : null}

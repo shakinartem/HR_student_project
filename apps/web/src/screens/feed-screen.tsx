@@ -43,9 +43,12 @@ export function FeedScreen({
     <div className="min-h-screen bg-bg-primary">
       <header className="sticky top-0 z-10 bg-bg-secondary/80 backdrop-blur-sm">
         <div className="flex items-center justify-between px-4 py-4">
-          <div>
-            <h1 className="text-2xl font-bold text-text-primary">Jobs</h1>
-            <p className="text-sm text-text-secondary mt-1">Secure student jobs & internships</p>
+          <div className="flex items-center gap-3">
+            <img src="/logo.jpg" alt="ДжобХаб" className="h-8 w-8 rounded-lg object-cover" />
+            <div>
+              <h1 className="text-2xl font-bold text-text-primary">ДжобХаб</h1>
+              <p className="text-sm text-text-secondary mt-1">Безопасные подработки и стажировки для студентов</p>
+            </div>
           </div>
           <span className="rounded-full bg-bg-card px-4 py-2 text-xs font-medium text-accent border border-border">
             {authLabel}
@@ -80,28 +83,28 @@ export function FeedScreen({
         {isLoading ? (
           <Card className="flex items-center gap-3">
             <LoaderCircle className="h-5 w-5 animate-spin text-accent" />
-            <p className="m-0 text-sm text-text-secondary">Loading job opportunities...</p>
+            <p className="m-0 text-sm text-text-secondary">Загружаем вакансии...</p>
           </Card>
         ) : null}
 
         {!isLoading && isError ? (
           <Card className="space-y-3">
             <div>
-              <h2 className="mb-1 mt-0 text-lg font-semibold text-text-primary">Unable to load feed</h2>
-              <p className="m-0 text-sm text-text-secondary">Check connection and try again.</p>
+              <h2 className="mb-1 mt-0 text-lg font-semibold text-text-primary">Не удалось загрузить ленту</h2>
+              <p className="m-0 text-sm text-text-secondary">Проверь соединение и попробуй ещё раз.</p>
             </div>
             <Button className="w-full" variant="secondary" onClick={onRetry}>
               <RefreshCcw className="mr-2 h-4 w-4" />
-              Refresh
+              Обновить
             </Button>
           </Card>
         ) : null}
 
         {!isLoading && !isError && vacancies.length === 0 ? (
           <Card>
-            <h2 className="mb-1 mt-0 text-lg font-semibold text-text-primary">No vacancies yet</h2>
+            <h2 className="mb-1 mt-0 text-lg font-semibold text-text-primary">Пока пусто</h2>
             <p className="m-0 text-sm text-text-secondary">
-              No active jobs right now. Check back later for new opportunities.
+              Сейчас нет активных вакансий. Загляни позже.
             </p>
           </Card>
         ) : null}

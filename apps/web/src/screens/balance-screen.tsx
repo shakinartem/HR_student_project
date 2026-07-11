@@ -10,7 +10,7 @@ import type { Payment, StudentBalanceResponse, StudentSubscription, User } from 
 
 function formatCurrency(amount: string, currency = "RUB") {
   const value = Number(amount);
-  return new Intl.NumberFormat("en-US", {
+  return new Intl.NumberFormat("ru-RU", {
     style: "currency",
     currency,
     maximumFractionDigits: 2,
@@ -21,7 +21,7 @@ function formatDate(value: string | null) {
   if (!value) {
     return "—";
   }
-  return new Intl.DateTimeFormat("en-US", {
+  return new Intl.DateTimeFormat("ru-RU", {
     day: "2-digit",
     month: "short",
     hour: "2-digit",
@@ -31,9 +31,9 @@ function formatDate(value: string | null) {
 
 function subscriptionLabel(subscription: StudentSubscription | null) {
   if (!subscription || subscription.status !== "active") {
-    return "Not active";
+    return "Не активен";
   }
-  return `Active until ${formatDate(subscription.expires_at)}`;
+  return `Активен до ${formatDate(subscription.expires_at)}`;
 }
 
 export function BalanceScreen({
@@ -84,11 +84,11 @@ export function BalanceScreen({
       <header className="sticky top-0 z-10 bg-bg-secondary/80 backdrop-blur-sm">
         <div className="flex items-center justify-between px-4 py-4">
           <div>
-            <h1 className="text-2xl font-bold text-text-primary">Wallet</h1>
-            <p className="text-sm text-text-secondary mt-1">Top up balance and activate access to apply</p>
+            <h1 className="text-2xl font-bold text-text-primary">Баланс</h1>
+            <p className="text-sm text-text-secondary mt-1">Пополнение для активации доступа к откликам</p>
           </div>
           <span className="rounded-full bg-bg-card px-4 py-2 text-xs font-medium text-accent border border-border">
-            {currentUser?.role === "student" ? "Student" : "Guest"}
+            {currentUser?.role === "student" ? "Студент" : "Гость"}
           </span>
         </div>
       </header>
@@ -100,11 +100,11 @@ export function BalanceScreen({
               <Wallet className="h-8 w-8 text-text-secondary" />
             </div>
             <div className="text-center">
-              <h2 className="mb-1 mt-0 text-lg font-semibold text-text-primary">Login required</h2>
+              <h2 className="mb-1 mt-0 text-lg font-semibold text-text-primary">Нужен вход</h2>
               <p className="m-0 text-sm text-text-secondary max-w-xs">
                 {canAuthenticateInTelegram
-                  ? "Restart Mini App in Telegram for automatic authentication"
-                  : "Telegram authentication required to top up balance and activate access"}
+                  ? "Перезапустите Mini App в Telegram"
+                  : "Откройте приложение в Telegram"}
               </p>
             </div>
           </Card>
@@ -113,7 +113,7 @@ export function BalanceScreen({
             {isLoading ? (
               <Card className="flex items-center gap-3">
                 <LoaderCircle className="h-5 w-5 animate-spin text-accent" />
-                <p className="m-0 text-sm text-text-secondary">Loading balance...</p>
+                <p className="m-0 text-sm text-text-secondary">Загружаем баланс...</p>
               </Card>
             ) : null}
 
@@ -128,7 +128,7 @@ export function BalanceScreen({
                 <Card className="bg-gradient-to-br from-accent/20 to-orange-500/10">
                   <div className="flex items-center justify-between gap-3">
                     <div>
-                      <p className="m-0 text-sm text-accent/80">Current Balance</p>
+                      <p className="m-0 text-sm text-accent/80">Текущий баланс</p>
                       <p className="mb-0 mt-2 text-3xl font-bold text-text-primary">
                         {formatCurrency(balance?.balance ?? "0", balance?.currency ?? "RUB")}
                       </p>
@@ -142,8 +142,8 @@ export function BalanceScreen({
                 <Card>
                   <div className="mb-3 flex items-start justify-between gap-3">
                     <div>
-                      <h2 className="mb-1 mt-0 text-lg font-semibold text-text-primary">Access Status</h2>
-                      <p className="m-0 text-sm text-text-secondary">Subscription activates after confirmed payment</p>
+                      <h2 className="mb-1 mt-0 text-lg font-semibold text-text-primary">Статус доступа</h2>
+                      <p className="m-0 text-sm text-text-secondary">Подписка после подтвержденного платежа</p>
                     </div>
                     {subscription?.status === "active" ? (
                       <CheckCircle2 className="h-5 w-5 text-green-400" />
@@ -151,16 +151,16 @@ export function BalanceScreen({
                       <Clock3 className="h-5 w-5 text-amber-400" />
                     )}
                   </div>
-                  <InfoRow label="Status" value={subscriptionLabel(subscription)} />
-                  <InfoRow label="Start" value={formatDate(subscription?.starts_at ?? null)} />
-                  <InfoRow label="Expires" value={formatDate(subscription?.expires_at ?? null)} />
+                  <InfoRow label="Статус" value={subscriptionLabel(subscription)} />
+                  <InfoRow label="Начало" value={formatDate(subscription?.starts_at ?? null)} />
+                  <InfoRow label="Окончание" value={formatDate(subscription?.expires_at ?? null)} />
                 </Card>
 
                 <Card className="space-y-4">
                   <div>
-                    <h2 className="mb-1 mt-0 text-lg font-semibold text-text-primary">Top Up Balance</h2>
+                    <h2 className="mb-1 mt-0 text-lg font-semibold text-text-primary">Пополнить баланс</h2>
                     <p className="m-0 text-sm text-text-secondary">
-                      First top-up must cover monthly tariff (350 RUB by default)
+                      Первое пополнение покрывает месячный тариф (350 ₽)
                     </p>
                   </div>
 
@@ -177,7 +177,7 @@ export function BalanceScreen({
                     ))}
                   </div>
 
-                  <FormField label="Amount">
+                  <FormField label="Сумма">
                     <Input
                       inputMode="decimal"
                       onChange={(event) => onTopUpAmountChange(event.target.value)}
@@ -189,23 +189,21 @@ export function BalanceScreen({
 
                   <Button className="w-full" onClick={onCreatePayment} size="lg">
                     {isCreatingPayment ? <LoaderCircle className="mr-2 h-4 w-4 animate-spin" /> : null}
-                    Create Payment
+                    Создать платёж
                   </Button>
                 </Card>
 
                 {pendingPaymentId ? (
                   <Card className="space-y-3">
                     <div>
-                      <h2 className="mb-1 mt-0 text-lg font-semibold text-text-primary">Payment Created</h2>
-                      <p className="m-0 text-sm text-text-secondary">
-                        Payment awaiting confirmation. In local/test mode, confirm manually.
-                      </p>
+                      <h2 className="mb-1 mt-0 text-lg font-semibold text-text-primary">Платёж создан</h2>
+                      <p className="m-0 text-sm text-text-secondary">Ожидает подтверждения</p>
                     </div>
-                    <p className="m-0 text-xs text-text-secondary">Payment ID: {pendingPaymentId}</p>
+                    <p className="m-0 text-xs text-text-secondary">ID: {pendingPaymentId}</p>
                     {canMockConfirm ? (
                       <Button className="w-full" onClick={onConfirmPayment} variant="secondary">
                         {isConfirmingPayment ? <LoaderCircle className="mr-2 h-4 w-4 animate-spin" /> : null}
-                        Mock Confirm
+                        Подтвердить
                       </Button>
                     ) : null}
                   </Card>
@@ -225,8 +223,8 @@ export function BalanceScreen({
 
                 <Card className="space-y-3">
                   <div>
-                    <h2 className="mb-1 mt-0 text-lg font-semibold text-text-primary">Balance History</h2>
-                    <p className="m-0 text-sm text-text-secondary">All transactions from ledger</p>
+                    <h2 className="mb-1 mt-0 text-lg font-semibold text-text-primary">История операций</h2>
+                    <p className="m-0 text-sm text-text-secondary">Все списания и пополнения</p>
                   </div>
                   {balance?.transactions.length ? (
                     balance.transactions.map((transaction) => (
@@ -241,27 +239,7 @@ export function BalanceScreen({
                       </div>
                     ))
                   ) : (
-                    <p className="m-0 text-sm text-text-secondary">No transactions yet.</p>
-                  )}
-                </Card>
-
-                <Card className="space-y-3">
-                  <div>
-                    <h2 className="mb-1 mt-0 text-lg font-semibold text-text-primary">Payment History</h2>
-                    <p className="m-0 text-sm text-text-secondary">Created and confirmed payments</p>
-                  </div>
-                  {payments.length ? (
-                    payments.map((payment) => (
-                      <div className="rounded-xl bg-bg-primary px-4 py-3" key={payment.id}>
-                        <div className="flex items-center justify-between gap-3">
-                          <span className="text-sm font-medium text-text-primary">{formatCurrency(payment.amount, payment.currency)}</span>
-                          <span className="text-xs font-medium uppercase tracking-wide text-text-secondary">{payment.status}</span>
-                        </div>
-                        <p className="mb-0 mt-1 text-xs text-text-secondary">{formatDate(payment.created_at)}</p>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="m-0 text-sm text-text-secondary">No payments yet.</p>
+                    <p className="m-0 text-sm text-text-secondary">Пока нет операций.</p>
                   )}
                 </Card>
               </>
