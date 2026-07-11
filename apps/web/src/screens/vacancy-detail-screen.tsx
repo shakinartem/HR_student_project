@@ -1,6 +1,5 @@
 import { ArrowLeft, BadgeRussianRuble, Building2, Clock3, MapPin } from "lucide-react";
 
-import { AppShell } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import type { VacancyDetail } from "@/types/api";
@@ -12,8 +11,8 @@ function VacancySection({ title, text }: { title: string; text: string | null | 
 
   return (
     <Card>
-      <h2 className="mb-2 mt-0 text-base font-semibold">{title}</h2>
-      <p className="m-0 whitespace-pre-line text-sm text-slate-700">{text}</p>
+      <h2 className="mb-2 mt-0 text-base font-semibold text-text-primary">{title}</h2>
+      <p className="m-0 whitespace-pre-line text-sm text-text-secondary">{text}</p>
     </Card>
   );
 }
@@ -36,75 +35,84 @@ export function VacancyDetailScreen({
   isApplying: boolean;
 }) {
   return (
-    <AppShell
-      title={vacancy?.title ?? "Вакансия"}
-      subtitle={vacancy?.company_name ?? "Подробности предложения"}
-      headerRight={
-        <button className="rounded-2xl border-0 bg-white px-3 py-2 text-slate-600" onClick={onBack} type="button">
-          <ArrowLeft className="h-5 w-5" />
-        </button>
-      }
-    >
-      {isLoading ? (
-        <Card>
-          <p className="m-0 text-sm text-slate-600">Загружаем детали вакансии…</p>
-        </Card>
-      ) : null}
-
-      {!isLoading && errorMessage ? (
-        <Card className="space-y-3">
+    <div className="min-h-screen bg-bg-primary">
+      <header className="sticky top-0 z-10 bg-bg-secondary/80 backdrop-blur-sm">
+        <div className="flex items-center justify-between px-4 py-4">
           <div>
-            <h2 className="mb-1 mt-0 text-lg font-semibold">Не удалось открыть вакансию</h2>
-            <p className="m-0 text-sm text-slate-600">{errorMessage}</p>
+            <h1 className="text-2xl font-bold text-text-primary">{vacancy?.title ?? "Job"}</h1>
+            <p className="text-sm text-text-secondary mt-1">{vacancy?.company_name ?? "Details"}</p>
           </div>
-          <Button className="w-full" variant="secondary" onClick={onBack}>
-            Вернуться в ленту
-          </Button>
-        </Card>
-      ) : null}
+          <button className="rounded-full border-0 bg-bg-card p-3 text-text-secondary hover:text-text-primary" onClick={onBack} type="button">
+            <ArrowLeft className="h-5 w-5" />
+          </button>
+        </div>
+      </header>
 
-      {!isLoading && vacancy ? (
-        <>
-          <Card className="space-y-4">
-            <div className="space-y-3">
-              <div className="flex items-center gap-2 text-sm text-slate-600">
-                <Building2 className="h-4 w-4 text-accent" />
-                <span>{vacancy.company_name ?? "Компания уточняется"}</span>
-              </div>
-              <div className="grid grid-cols-1 gap-2 text-sm text-slate-700">
-                <div className="flex items-center gap-2 rounded-2xl bg-slate-50 px-3 py-2">
-                  <BadgeRussianRuble className="h-4 w-4 text-accent" />
-                  <span>{vacancy.salary_text}</span>
-                </div>
-                <div className="flex items-center gap-2 rounded-2xl bg-slate-50 px-3 py-2">
-                  <Clock3 className="h-4 w-4 text-accent" />
-                  <span>{vacancy.schedule}</span>
-                </div>
-                <div className="flex items-center gap-2 rounded-2xl bg-slate-50 px-3 py-2">
-                  <MapPin className="h-4 w-4 text-accent" />
-                  <span>{vacancy.district ?? "Район уточняется"}</span>
-                </div>
-              </div>
+      <main className="px-4 py-4 space-y-4">
+        {isLoading ? (
+          <Card>
+            <p className="m-0 text-sm text-text-secondary">Loading vacancy details...</p>
+          </Card>
+        ) : null}
+
+        {!isLoading && errorMessage ? (
+          <Card className="space-y-3">
+            <div>
+              <h2 className="mb-1 mt-0 text-lg font-semibold text-text-primary">Unable to load vacancy</h2>
+              <p className="m-0 text-sm text-text-secondary">{errorMessage}</p>
             </div>
-
-            <Button className="w-full" disabled={isApplying} size="lg" onClick={onApply}>
-              {isApplying ? "Отправляем…" : "Откликнуться"}
+            <Button className="w-full" variant="secondary" onClick={onBack}>
+              Back to Feed
             </Button>
-            {applyError ? <p className="m-0 text-sm text-red-600">{applyError}</p> : null}
-            <p className="m-0 text-xs text-slate-500">Контакты работодателя скрыты и не отображаются в Mini App.</p>
           </Card>
+        ) : null}
 
-          <Card className="border-blue-100 bg-blue-50">
-            <p className="m-0 text-sm text-slate-700">
-              После отклика HR увидит только учебный профиль и комментарий. Контакты студента откроются HR только после принятия отклика.
-            </p>
-          </Card>
+        {!isLoading && vacancy ? (
+          <>
+            <Card className="space-y-4">
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 text-sm text-text-secondary">
+                  <Building2 className="h-4 w-4 text-accent" />
+                  <span>{vacancy.company_name ?? "Company pending"}</span>
+                </div>
+                <div className="grid grid-cols-1 gap-2 text-sm">
+                  <div className="flex items-center gap-2 rounded-xl bg-bg-primary px-3 py-2">
+                    <BadgeRussianRuble className="h-4 w-4 text-accent" />
+                    <span className="text-text-primary">{vacancy.salary_text}</span>
+                  </div>
+                  <div className="flex items-center gap-2 rounded-xl bg-bg-primary px-3 py-2">
+                    <Clock3 className="h-4 w-4 text-accent" />
+                    <span className="text-text-secondary">{vacancy.schedule}</span>
+                  </div>
+                  <div className="flex items-center gap-2 rounded-xl bg-bg-primary px-3 py-2">
+                    <MapPin className="h-4 w-4 text-accent" />
+                    <span className="text-text-secondary">{vacancy.district ?? "District pending"}</span>
+                  </div>
+                </div>
+              </div>
 
-          <VacancySection title="Описание" text={vacancy.description} />
-          <VacancySection title="Требования" text={vacancy.requirements} />
-          <VacancySection title="Условия" text={vacancy.conditions} />
-        </>
-      ) : null}
-    </AppShell>
+              <Button className="w-full" disabled={isApplying} size="lg" onClick={onApply}>
+                {isApplying ? "Sending..." : "Apply"}
+              </Button>
+              {applyError ? <p className="m-0 text-sm text-red-400">{applyError}</p> : null}
+              <p className="m-0 text-xs text-text-secondary text-center">
+                Employer contacts are hidden in the app.
+              </p>
+            </Card>
+
+            <Card className="border-accent/20 bg-accent/10">
+              <p className="m-0 text-sm text-text-primary">
+                After applying, HR will see only your academic profile and comment. Your contacts are revealed only after HR accepts.
+              </p>
+            </Card>
+
+            <VacancySection title="Description" text={vacancy.description} />
+            <VacancySection title="Responsibilities" text={vacancy.responsibilities} />
+            <VacancySection title="Requirements" text={vacancy.requirements} />
+            <VacancySection title="Conditions" text={vacancy.conditions} />
+          </>
+        ) : null}
+      </main>
+    </div>
   );
 }

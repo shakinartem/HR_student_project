@@ -1,6 +1,5 @@
 import { CheckCircle2, Clock3, LoaderCircle, Wallet } from "lucide-react";
 
-import { AppShell } from "@/components/app-shell";
 import { BottomNav } from "@/components/bottom-nav";
 import { FormField, InfoRow } from "@/components/form-field";
 import { Button } from "@/components/ui/button";
@@ -11,7 +10,7 @@ import type { Payment, StudentBalanceResponse, StudentSubscription, User } from 
 
 function formatCurrency(amount: string, currency = "RUB") {
   const value = Number(amount);
-  return new Intl.NumberFormat("ru-RU", {
+  return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency,
     maximumFractionDigits: 2,
@@ -22,7 +21,7 @@ function formatDate(value: string | null) {
   if (!value) {
     return "—";
   }
-  return new Intl.DateTimeFormat("ru-RU", {
+  return new Intl.DateTimeFormat("en-US", {
     day: "2-digit",
     month: "short",
     hour: "2-digit",
@@ -32,9 +31,9 @@ function formatDate(value: string | null) {
 
 function subscriptionLabel(subscription: StudentSubscription | null) {
   if (!subscription || subscription.status !== "active") {
-    return "Не активен";
+    return "Not active";
   }
-  return `Активен до ${formatDate(subscription.expires_at)}`;
+  return `Active until ${formatDate(subscription.expires_at)}`;
 }
 
 export function BalanceScreen({
@@ -81,193 +80,197 @@ export function BalanceScreen({
   const isGuest = !currentUser;
 
   return (
-    <AppShell
-      title="Баланс"
-      subtitle="Пополняй внутренний баланс и активируй доступ к откликам."
-      headerRight={
-        <span className="rounded-full bg-white px-3 py-2 text-xs font-medium text-slate-600">
-          {currentUser?.role === "student" ? "Студент" : "Гость"}
-        </span>
-      }
-    >
-      {isGuest ? (
-        <>
-          <Card className="space-y-3">
-            <div>
-              <h2 className="mb-1 mt-0 text-lg font-semibold">Баланс доступен после входа</h2>
-              <p className="m-0 text-sm text-slate-600">
-                В гостевом режиме можно смотреть вакансии, но пополнение и активация доступа недоступны.
+    <div className="min-h-screen bg-bg-primary">
+      <header className="sticky top-0 z-10 bg-bg-secondary/80 backdrop-blur-sm">
+        <div className="flex items-center justify-between px-4 py-4">
+          <div>
+            <h1 className="text-2xl font-bold text-text-primary">Wallet</h1>
+            <p className="text-sm text-text-secondary mt-1">Top up balance and activate access to apply</p>
+          </div>
+          <span className="rounded-full bg-bg-card px-4 py-2 text-xs font-medium text-accent border border-border">
+            {currentUser?.role === "student" ? "Student" : "Guest"}
+          </span>
+        </div>
+      </header>
+
+      <main className="px-4 py-4 pb-24 space-y-4">
+        {isGuest ? (
+          <Card className="flex flex-col items-center gap-4 py-8">
+            <div className="w-16 h-16 rounded-full bg-bg-secondary flex items-center justify-center border border-border">
+              <Wallet className="h-8 w-8 text-text-secondary" />
+            </div>
+            <div className="text-center">
+              <h2 className="mb-1 mt-0 text-lg font-semibold text-text-primary">Login required</h2>
+              <p className="m-0 text-sm text-text-secondary max-w-xs">
+                {canAuthenticateInTelegram
+                  ? "Restart Mini App in Telegram for automatic authentication"
+                  : "Telegram authentication required to top up balance and activate access"}
               </p>
             </div>
-            <p className="m-0 text-xs text-slate-500">
-              {canAuthenticateInTelegram
-                ? "Открой Mini App заново внутри Telegram, и мы попробуем авторизовать тебя автоматически."
-                : "Открой приложение внутри Telegram, чтобы пополнить баланс и активировать доступ."}
-            </p>
           </Card>
-          <BottomNav currentRoute="balance" onNavigate={onNavigate} />
-        </>
-      ) : (
-        <>
-          {isLoading ? (
-            <Card className="flex items-center gap-3">
-              <LoaderCircle className="h-5 w-5 animate-spin text-accent" />
-              <p className="m-0 text-sm text-slate-600">Загружаем баланс и подписку…</p>
-            </Card>
-          ) : null}
+        ) : (
+          <>
+            {isLoading ? (
+              <Card className="flex items-center gap-3">
+                <LoaderCircle className="h-5 w-5 animate-spin text-accent" />
+                <p className="m-0 text-sm text-text-secondary">Loading balance...</p>
+              </Card>
+            ) : null}
 
-          {!isLoading && errorMessage ? (
-            <Card className="border-red-100 bg-red-50">
-              <p className="m-0 text-sm text-red-700">{errorMessage}</p>
-            </Card>
-          ) : null}
+            {!isLoading && errorMessage ? (
+              <Card className="border-red-500/20 bg-red-500/10">
+                <p className="m-0 text-sm text-red-400">{errorMessage}</p>
+              </Card>
+            ) : null}
 
-          {!isLoading && !errorMessage ? (
-            <>
-              <Card className="bg-gradient-to-br from-blue-600 to-cyan-500 text-white">
-                <div className="flex items-center justify-between gap-3">
+            {!isLoading && !errorMessage ? (
+              <>
+                <Card className="bg-gradient-to-br from-accent/20 to-orange-500/10">
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <p className="m-0 text-sm text-accent/80">Current Balance</p>
+                      <p className="mb-0 mt-2 text-3xl font-bold text-text-primary">
+                        {formatCurrency(balance?.balance ?? "0", balance?.currency ?? "RUB")}
+                      </p>
+                    </div>
+                    <div className="rounded-full bg-accent/20 p-3">
+                      <Wallet className="h-6 w-6 text-accent" />
+                    </div>
+                  </div>
+                </Card>
+
+                <Card>
+                  <div className="mb-3 flex items-start justify-between gap-3">
+                    <div>
+                      <h2 className="mb-1 mt-0 text-lg font-semibold text-text-primary">Access Status</h2>
+                      <p className="m-0 text-sm text-text-secondary">Subscription activates after confirmed payment</p>
+                    </div>
+                    {subscription?.status === "active" ? (
+                      <CheckCircle2 className="h-5 w-5 text-green-400" />
+                    ) : (
+                      <Clock3 className="h-5 w-5 text-amber-400" />
+                    )}
+                  </div>
+                  <InfoRow label="Status" value={subscriptionLabel(subscription)} />
+                  <InfoRow label="Start" value={formatDate(subscription?.starts_at ?? null)} />
+                  <InfoRow label="Expires" value={formatDate(subscription?.expires_at ?? null)} />
+                </Card>
+
+                <Card className="space-y-4">
                   <div>
-                    <p className="m-0 text-sm text-blue-50">Текущий баланс</p>
-                    <p className="mb-0 mt-2 text-3xl font-semibold">
-                      {formatCurrency(balance?.balance ?? "0", balance?.currency ?? "RUB")}
+                    <h2 className="mb-1 mt-0 text-lg font-semibold text-text-primary">Top Up Balance</h2>
+                    <p className="m-0 text-sm text-text-secondary">
+                      First top-up must cover monthly tariff (350 RUB by default)
                     </p>
                   </div>
-                  <div className="rounded-2xl bg-white/20 p-3">
-                    <Wallet className="h-6 w-6" />
+
+                  <div className="flex flex-wrap gap-2">
+                    {[350, 700, 1050].map((value) => (
+                      <button
+                        className="rounded-full bg-bg-primary px-3 py-2 text-xs font-medium text-text-secondary border border-border hover:text-text-primary"
+                        key={value}
+                        onClick={() => onQuickAmountPick(value)}
+                        type="button"
+                      >
+                        {value} ₽
+                      </button>
+                    ))}
                   </div>
-                </div>
-              </Card>
 
-              <Card>
-                <div className="mb-3 flex items-start justify-between gap-3">
-                  <div>
-                    <h2 className="mb-1 mt-0 text-lg font-semibold">Статус доступа</h2>
-                    <p className="m-0 text-sm text-slate-600">Подписка активируется после подтвержденного платежа.</p>
-                  </div>
-                  {subscription?.status === "active" ? (
-                    <CheckCircle2 className="h-5 w-5 text-emerald-600" />
-                  ) : (
-                    <Clock3 className="h-5 w-5 text-amber-600" />
-                  )}
-                </div>
-                <InfoRow label="Статус" value={subscriptionLabel(subscription)} />
-                <InfoRow label="Начало" value={formatDate(subscription?.starts_at ?? null)} />
-                <InfoRow label="Окончание" value={formatDate(subscription?.expires_at ?? null)} />
-              </Card>
+                  <FormField label="Amount">
+                    <Input
+                      inputMode="decimal"
+                      onChange={(event) => onTopUpAmountChange(event.target.value)}
+                      placeholder="350"
+                      value={topUpAmount}
+                      className="bg-bg-primary border-border"
+                    />
+                  </FormField>
 
-              <Card className="space-y-4">
-                <div>
-                  <h2 className="mb-1 mt-0 text-lg font-semibold">Пополнить баланс</h2>
-                  <p className="m-0 text-sm text-slate-600">
-                    Первое пополнение должно покрывать месячный тариф. Если тариф недоступен из API, используем 350 ₽ по умолчанию.
-                  </p>
-                </div>
+                  <Button className="w-full" onClick={onCreatePayment} size="lg">
+                    {isCreatingPayment ? <LoaderCircle className="mr-2 h-4 w-4 animate-spin" /> : null}
+                    Create Payment
+                  </Button>
+                </Card>
 
-                <div className="flex flex-wrap gap-2">
-                  {[350, 700, 1050].map((value) => (
-                    <button
-                      className="rounded-full bg-slate-100 px-3 py-2 text-xs font-semibold text-slate-700"
-                      key={value}
-                      onClick={() => onQuickAmountPick(value)}
-                      type="button"
-                    >
-                      {value} ₽
-                    </button>
-                  ))}
-                </div>
+                {pendingPaymentId ? (
+                  <Card className="space-y-3">
+                    <div>
+                      <h2 className="mb-1 mt-0 text-lg font-semibold text-text-primary">Payment Created</h2>
+                      <p className="m-0 text-sm text-text-secondary">
+                        Payment awaiting confirmation. In local/test mode, confirm manually.
+                      </p>
+                    </div>
+                    <p className="m-0 text-xs text-text-secondary">Payment ID: {pendingPaymentId}</p>
+                    {canMockConfirm ? (
+                      <Button className="w-full" onClick={onConfirmPayment} variant="secondary">
+                        {isConfirmingPayment ? <LoaderCircle className="mr-2 h-4 w-4 animate-spin" /> : null}
+                        Mock Confirm
+                      </Button>
+                    ) : null}
+                  </Card>
+                ) : null}
 
-                <FormField label="Сумма пополнения">
-                  <Input
-                    inputMode="decimal"
-                    onChange={(event) => onTopUpAmountChange(event.target.value)}
-                    placeholder="350"
-                    value={topUpAmount}
-                  />
-                </FormField>
+                {paymentError ? (
+                  <Card className="border-red-500/20 bg-red-500/10">
+                    <p className="m-0 text-sm text-red-400">{paymentError}</p>
+                  </Card>
+                ) : null}
 
-                <Button className="w-full" onClick={onCreatePayment} size="lg">
-                  {isCreatingPayment ? <LoaderCircle className="mr-2 h-4 w-4 animate-spin" /> : null}
-                  Создать платёж
-                </Button>
-              </Card>
+                {paymentSuccess ? (
+                  <Card className="border-accent/20 bg-accent/10">
+                    <p className="m-0 text-sm text-accent">{paymentSuccess}</p>
+                  </Card>
+                ) : null}
 
-              {pendingPaymentId ? (
                 <Card className="space-y-3">
                   <div>
-                    <h2 className="mb-1 mt-0 text-lg font-semibold">Платёж создан</h2>
-                    <p className="m-0 text-sm text-slate-600">
-                      Платёж ожидает подтверждения на бэкенде. В локальном или тестовом режиме можно завершить его вручную.
-                    </p>
+                    <h2 className="mb-1 mt-0 text-lg font-semibold text-text-primary">Balance History</h2>
+                    <p className="m-0 text-sm text-text-secondary">All transactions from ledger</p>
                   </div>
-                  <p className="m-0 text-xs text-slate-500">ID платежа: {pendingPaymentId}</p>
-                  {canMockConfirm ? (
-                    <Button className="w-full" onClick={onConfirmPayment} variant="secondary">
-                      {isConfirmingPayment ? <LoaderCircle className="mr-2 h-4 w-4 animate-spin" /> : null}
-                      Mock confirm
-                    </Button>
-                  ) : null}
-                </Card>
-              ) : null}
-
-              {paymentError ? (
-                <Card className="border-red-100 bg-red-50">
-                  <p className="m-0 text-sm text-red-700">{paymentError}</p>
-                </Card>
-              ) : null}
-
-              {paymentSuccess ? (
-                <Card className="border-emerald-100 bg-emerald-50">
-                  <p className="m-0 text-sm text-emerald-700">{paymentSuccess}</p>
-                </Card>
-              ) : null}
-
-              <Card className="space-y-3">
-                <div>
-                  <h2 className="mb-1 mt-0 text-lg font-semibold">История баланса</h2>
-                  <p className="m-0 text-sm text-slate-600">Все списания и пополнения берутся из бухгалтерского леджера.</p>
-                </div>
-                {balance?.transactions.length ? (
-                  balance.transactions.map((transaction) => (
-                    <div className="rounded-2xl bg-slate-50 px-4 py-3" key={transaction.id}>
-                      <div className="flex items-center justify-between gap-3">
-                        <span className="text-sm font-semibold text-slate-800">{transaction.reason}</span>
-                        <span className={transaction.amount.startsWith("-") ? "text-sm font-semibold text-red-600" : "text-sm font-semibold text-emerald-600"}>
-                          {formatCurrency(transaction.amount, balance.currency)}
-                        </span>
+                  {balance?.transactions.length ? (
+                    balance.transactions.map((transaction) => (
+                      <div className="rounded-xl bg-bg-primary px-4 py-3" key={transaction.id}>
+                        <div className="flex items-center justify-between gap-3">
+                          <span className="text-sm font-medium text-text-primary">{transaction.reason}</span>
+                          <span className={transaction.amount.startsWith("-") ? "text-sm font-medium text-red-400" : "text-sm font-medium text-green-400"}>
+                            {formatCurrency(transaction.amount, balance.currency)}
+                          </span>
+                        </div>
+                        <p className="mb-0 mt-1 text-xs text-text-secondary">{formatDate(transaction.created_at)}</p>
                       </div>
-                      <p className="mb-0 mt-1 text-xs text-slate-500">{formatDate(transaction.created_at)}</p>
-                    </div>
-                  ))
-                ) : (
-                  <p className="m-0 text-sm text-slate-500">Пока нет операций.</p>
-                )}
-              </Card>
+                    ))
+                  ) : (
+                    <p className="m-0 text-sm text-text-secondary">No transactions yet.</p>
+                  )}
+                </Card>
 
-              <Card className="space-y-3">
-                <div>
-                  <h2 className="mb-1 mt-0 text-lg font-semibold">История платежей</h2>
-                  <p className="m-0 text-sm text-slate-600">Здесь видны созданные и подтвержденные платежи.</p>
-                </div>
-                {payments.length ? (
-                  payments.map((payment) => (
-                    <div className="rounded-2xl bg-slate-50 px-4 py-3" key={payment.id}>
-                      <div className="flex items-center justify-between gap-3">
-                        <span className="text-sm font-semibold text-slate-800">{formatCurrency(payment.amount, payment.currency)}</span>
-                        <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">{payment.status}</span>
+                <Card className="space-y-3">
+                  <div>
+                    <h2 className="mb-1 mt-0 text-lg font-semibold text-text-primary">Payment History</h2>
+                    <p className="m-0 text-sm text-text-secondary">Created and confirmed payments</p>
+                  </div>
+                  {payments.length ? (
+                    payments.map((payment) => (
+                      <div className="rounded-xl bg-bg-primary px-4 py-3" key={payment.id}>
+                        <div className="flex items-center justify-between gap-3">
+                          <span className="text-sm font-medium text-text-primary">{formatCurrency(payment.amount, payment.currency)}</span>
+                          <span className="text-xs font-medium uppercase tracking-wide text-text-secondary">{payment.status}</span>
+                        </div>
+                        <p className="mb-0 mt-1 text-xs text-text-secondary">{formatDate(payment.created_at)}</p>
                       </div>
-                      <p className="mb-0 mt-1 text-xs text-slate-500">{formatDate(payment.created_at)}</p>
-                    </div>
-                  ))
-                ) : (
-                  <p className="m-0 text-sm text-slate-500">Платежей ещё не было.</p>
-                )}
-              </Card>
-            </>
-          ) : null}
+                    ))
+                  ) : (
+                    <p className="m-0 text-sm text-text-secondary">No payments yet.</p>
+                  )}
+                </Card>
+              </>
+            ) : null}
+          </>
+        )}
 
-          <BottomNav currentRoute="balance" onNavigate={onNavigate} />
-        </>
-      )}
-    </AppShell>
+        <BottomNav currentRoute="balance" onNavigate={onNavigate} />
+      </main>
+    </div>
   );
 }

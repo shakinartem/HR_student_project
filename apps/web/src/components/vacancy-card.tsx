@@ -18,31 +18,31 @@ export function VacancyCard({
         <div className="flex items-start justify-between gap-3">
           <div>
             {vacancy.is_promoted ? (
-              <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-1 text-xs font-semibold text-amber-700">
+              <span className="inline-flex items-center gap-1 rounded-full bg-accent/20 px-3 py-1.5 text-xs font-semibold text-accent">
                 <Sparkles className="h-3.5 w-3.5" />
-                Продвигается
+                Promoted
               </span>
             ) : null}
-            <h2 className="mb-1 mt-3 text-lg font-semibold">{vacancy.title}</h2>
-            <p className="m-0 text-sm text-slate-600">{vacancy.company_name ?? "Компания уточняется"}</p>
+            <h2 className="mb-1 mt-3 text-lg font-bold text-text-primary">{vacancy.title}</h2>
+            <p className="m-0 text-sm text-text-secondary">{vacancy.company_name ?? "Company pending"}</p>
           </div>
-          <ArrowRight className="mt-1 h-5 w-5 text-slate-400" />
+          <ArrowRight className="mt-1 h-5 w-5 text-text-secondary" />
         </div>
 
-        <div className="mt-4 grid grid-cols-2 gap-2 text-sm text-slate-700">
-          <div className="flex items-center gap-2 rounded-2xl bg-slate-50 px-3 py-2">
+        <div className="mt-4 grid grid-cols-2 gap-2 text-sm">
+          <div className="flex items-center gap-2 rounded-xl bg-bg-primary px-3 py-2">
             <BadgeRussianRuble className="h-4 w-4 text-accent" />
-            <span>{vacancy.salary_text}</span>
+            <span className="text-text-primary">{vacancy.salary_text}</span>
           </div>
-          <div className="flex items-center gap-2 rounded-2xl bg-slate-50 px-3 py-2">
+          <div className="flex items-center gap-2 rounded-xl bg-bg-primary px-3 py-2">
             <MapPin className="h-4 w-4 text-accent" />
-            <span>{vacancy.district ?? "Район уточняется"}</span>
+            <span className="text-text-secondary">{vacancy.district ?? "District pending"}</span>
           </div>
-          <div className="flex items-center gap-2 rounded-2xl bg-slate-50 px-3 py-2">
+          <div className="flex items-center gap-2 rounded-xl bg-bg-primary px-3 py-2">
             <Clock3 className="h-4 w-4 text-accent" />
-            <span>{vacancy.schedule}</span>
+            <span className="text-text-secondary">{vacancy.schedule}</span>
           </div>
-          <div className="rounded-2xl bg-slate-50 px-3 py-2 text-slate-700">{vacancy.job_type}</div>
+          <div className="rounded-xl bg-bg-primary px-3 py-2 text-text-secondary">{vacancy.job_type}</div>
         </div>
       </Card>
     </button>
