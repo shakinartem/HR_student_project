@@ -44,7 +44,7 @@ export function FeedScreen({
       <header className="sticky top-0 z-10 bg-bg-secondary/80 backdrop-blur-sm">
         <div className="flex items-center justify-between px-4 py-4">
           <div className="flex items-center gap-3">
-            <img src="/logo.jpg" alt="ДжобХаб" className="h-8 w-8 rounded-lg object-cover" />
+            <img src="/logo.jpg" alt="ДжобХаб" className="h-10 w-10 rounded-xl object-cover" />
             <div>
               <h1 className="text-2xl font-bold text-text-primary">ДжобХаб</h1>
               <p className="text-sm text-text-secondary mt-1">Безопасные подработки и стажировки для студентов</p>
